@@ -16,17 +16,21 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Factura {
+public class Factura extends BaseEntidad{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int numero;
     private Date fecha;
-
     private double descuento;
-
-
-
+    private boolean formaPago = true;
     private int total;
+    private String pago;
 
+
+    public void retiro(boolean FormaPago) {
+        if (FormaPago == formaPago) {
+            pago = "Efectivo";
+        } else {
+            pago = "Otros medios de pago";
+        }
+    }
 }

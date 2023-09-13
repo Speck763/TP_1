@@ -12,14 +12,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 
+
 public class Domicilio  extends BaseEntidad{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  private Long id;
     private String calle;
     private String numero;
     private String localidad;
-
-
-
 }

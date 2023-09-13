@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +17,6 @@ import java.util.List;
 
 public class Cliente extends BaseEntidad{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
 
     private String nombre;
     private String apellido;
@@ -28,19 +24,26 @@ public class Cliente extends BaseEntidad{
     private String telefono;
     private String email;
 
+    //Se crea la relacion con domicilio
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "cliente_id")
-
     //Colocar esta Anotacion sino me da error
     @Builder.Default
+   private List<Domicilio> domicilios = new ArrayList<>();
 
-
-    private List<Domicilio> domicilios = new ArrayList<>();
+    //Se crea la relacion con pedido
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "cliente_id")
+    //Colocar esta Anotacion sino me da error
+    @Builder.Default
     private List<Pedido> pedidos = new ArrayList<>();
+
+    //Se guardan los domicilios del cliente
     public void agregarDomicilio(Domicilio dom){
         domicilios.add(dom);
     }
 
+    //Se muestran los domicilios del cliente
     public void mostrarDomicilio(){
         System.out.println("Domicilios de " + nombre + " " + apellido + ":");
 
@@ -48,6 +51,4 @@ public class Cliente extends BaseEntidad{
             System.out.println("Calle: " + domicilio.getCalle() + ", número: " + domicilio.getNumero());
         }
     }
-
-
 }

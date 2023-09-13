@@ -1,8 +1,9 @@
 package com.example.prueba.repositorios;
-
-import com.example.prueba.entidades.Domicilio;
-import com.example.prueba.entidades.Pedido;
+import com.example.prueba.entidades.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ClienteRepository extends JpaRepository<Domicilio, Long> {
+
+@Repository
+public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 }
