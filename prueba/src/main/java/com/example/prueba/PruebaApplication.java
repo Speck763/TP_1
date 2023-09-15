@@ -1,103 +1,130 @@
 package com.example.prueba;
 
-import com.example.prueba.entidades.Cliente;
-import com.example.prueba.entidades.Domicilio;
-import com.example.prueba.entidades.Pedido;
-import com.example.prueba.repositorios.ClienteRepository;
-import com.example.prueba.repositorios.DomicilioRepository;
-import com.example.prueba.repositorios.PedidoRepository;
+import com.example.prueba.entidades.*;
+import com.example.prueba.repositorios.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Service
+
+
+import java.util.Date;
 
 @SpringBootApplication
 public class PruebaApplication {
 
-//	@Autowired
-//	ClienteRepository clienteRepository;
-
+	@Autowired
+	ClienteRepository clienteRepository;
 	@Autowired
 	DomicilioRepository domicilioRepository;
+	@Autowired
+	PedidoRepository pedidoRepository;
+	@Autowired
+	DetallePedidoRepository detallePedidoRepository;
+	@Autowired
+	ProductoRepository productoRepository;
+	@Autowired
+	RubroRepository rubroRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(PruebaApplication.class, args);
 	}
 
 	@Bean
-	CommandLineRunner init(ClienteRepository clienteRepo, ClienteService clienteService) {
+	CommandLineRunner init(ClienteRepository clienteRepo) {
 		return args -> {
 			System.out.println("-----------------ESTOY FUNCIONANDO---------");
 
-			// Crear instancias de Domicilio
-			Domicilio domicilio1 = new Domicilio();
-			domicilio1.setCalle("Calle 1");
-			domicilio1.setNumero("123");
+			Cliente cliente = Cliente.builder()
+					.nombre("Francisco")
+					.apellido("Saavedra")
+					.telefono("2611111111")
+					.email("abc@gmail.com")
+					.build();
 
-			Domicilio domicilio2 = new Domicilio();
-			domicilio2.setCalle("Calle 2");
-			domicilio2.setNumero("456");
+			Domicilio domicilio1 = Domicilio.builder()
+					.localidad("Guaymallen")
+					.calle("Carril Godoy Cruz")
+					.numero("800")
+					.build();
 
-			// Crear instancia de Cliente
-			Cliente cliente = new Cliente();
-			cliente.setNombre("Juan");
-			cliente.setApellido("Pérez");
-			cliente.setTelefono("4850202");
-			cliente.setEmail("Juan_123@gmail.com");
+			Domicilio domicilio2 = Domicilio.builder()
+					.localidad("Ciudad")
+					.calle("Av. San Martin")
+					.numero("1500")
+					.build();
 
-			// Agregar domicilios al cliente
-			cliente.agregarDomicilio(domicilio1);
-			cliente.agregarDomicilio(domicilio2);
+			Pedido pedido1 = Pedido.builder()
+					.estado(true)
+					.fecha(new Date())
+					.envio("delivery")
+					.total(2500)
+					.build();
 
-			// Guardar el cliente en la base de datos
-			clienteService.guardarCliente(cliente);
+			Pedido pedido2 = Pedido.builder()
+					.estado(false)
+					.fecha(new Date())
+					.envio("delivery")
+					.total(1500)
+					.build();
 
-			Pedido pedido = new Pedido();
-			pedido.setEstado(true);
-			pedido.setFecha(new Date());
-			pedido.setTipoEnvio(true);
-			pedido.setTotal(100.0);
-			pedido.setIniciado();
-			pedido.retiro(true);
+			DetallePedido dp1 = DetallePedido.builder()
+					.cantidad(1)
+					.subtotal(2000)
+					.build();
 
-			pedido.mostrarEstado();
-			
-			// Recuperar el objeto Cliente desde la base de datos por ID
-			Cliente clienteRecuperado = clienteService.buscarClientePorId(cliente.getId());
+			DetallePedido dp2 = DetallePedido.builder()
+					.cantidad(1)
+					.subtotal(500)
+					.build();
 
-			if (clienteRecuperado != null) {
-				System.out.println("Nombre: " + clienteRecuperado.getNombre());
-				System.out.println("Apellido: " + clienteRecuperado.getApellido());
-				System.out.println("Telefono: " + clienteRecuperado.getTelefono());
-				System.out.println("Email: " + clienteRecuperado.getEmail());
-				System.out.println("----------------------------------------");
-				clienteRecuperado.mostrarDomicilio();
-			}
-				if (pedidoRecuperado != null) {
-				System.out.println("Estado: " + pedidoRecuperado.isEstado());
-				System.out.println("Fecha: " + pedidoRecuperado.getFecha());
-				System.out.println("Tipo de Envío: " + pedidoRecuperado.isTipoEnvio());
-				System.out.println("Total: " + pedidoRecuperado.getTotal());
-				System.out.println("Estado Actual: " + pedidoRecuperado.getEstadoActual());
-				System.out.println("Envío: " + pedidoRecuperado.getEnvio());
-			}
+			Producto producto1 = Producto.builder()
+					.tipo(true)
+					.tiempoEstimadoCocina(30)
+					.denominacion("Hamburguesa")
+					.precioVenta(2000)
+					.precioCompra(1000)
+					.stockActual(150)
+					.stockMinimo(50)
+					.unidadMedida("gr")
+					.receta("...")
+					.build();
+
+			Producto producto2 = Producto.builder()
+					.tipo(false)
+					.tiempoEstimadoCocina(0)
+					.denominacion("Coca-cola")
+					.precioVenta(500)
+					.precioCompra(200)
+					.stockActual(300)
+					.stockMinimo(10)
+					.unidadMedida("ml")
+					.receta("...")
+					.build();
+
+			Rubro rubro1 = Rubro.builder()
+					.denominacion("Alimentos procesados")
+					.build();
+
+			Rubro rubro2 = Rubro.builder()
+					.denominacion("Bebidas")
+					.build();
+
+			clienteRepository.save(cliente);
+//			domicilioRepository.save(domicilio1);
+//			domicilioRepository.save(domicilio2);
+//			pedidoRepository.save(pedido1);
+//			pedidoRepository.save(pedido2);
+//			detallePedidoRepository.save(dp1);
+//			detallePedidoRepository.save(dp2);
+//			productoRepository.save(producto1);
+//			productoRepository.save(producto2);
+			rubroRepository.save(rubro1);
+			rubroRepository.save(rubro2);
+
+
 		};
 	}
 }
 
-@Service
-class ClienteService {
-
-	@Autowired
-	private ClienteRepository clienteRepository;
-
-	public Cliente guardarCliente(Cliente cliente) {
-		return clienteRepository.save(cliente);
-	}
-
-	public Cliente buscarClientePorId(Long id) {
-		return clienteRepository.findById(id).orElse(null);
-	}
-}

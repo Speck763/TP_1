@@ -28,7 +28,7 @@ public class Pedido extends BaseEntidad{
     private String estadoActual;
     private String envio;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     //Se pone FetchType.LAZY porque como la relacion es 0..1, no siempre me pide la  factura
     @JoinColumn(nullable = true)
     @Builder.Default
